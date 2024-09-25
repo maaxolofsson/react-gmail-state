@@ -7,6 +7,20 @@ import "./styles/App.css";
 function App() {
   const [emails, setEmails] = useState(initialEmails);
 
+  const toggleRead = (target) => {
+    const updatedEmails = emails.map((email) =>
+      email === target ? { ...email, read: !email.read } : email
+    );
+    setEmails(updatedEmails);
+  };
+
+  const toggleStar = (target) => {
+    const updatedEmails = emails.map((email) =>
+      email === target ? { ...email, starred: !email.starred } : email
+    );
+    setEmails(updatedEmails);
+  };
+
   return (
     <div className="app">
       <Header />
@@ -33,25 +47,35 @@ function App() {
               id="hide-read"
               type="checkbox"
               checked={false}
-              // onChange={() => {}}
+              onChange={() => {}}
             />
           </li>
         </ul>
       </nav>
       <main className="emails">
-        {initialEmails.map((email) => (
+        {emails.map((email, index) => (
           <li
             className={"email " + (email.read ? "read" : "unread")}
-            key={email.id}
+            key={index}
           >
             <div className="select">
-              <input className="select-checkbox" type="checkbox" />
+              <input
+                className="select-checkbox"
+                type="checkbox"
+                checked={email.read}
+                onChange={() => {
+                  toggleRead(email);
+                }}
+              />
             </div>
             <div className="star">
               <input
                 className="star-checkbox"
                 type="checkbox"
                 checked={email.starred}
+                onChange={() => {
+                  toggleStar(email);
+                }}
               />
             </div>
             <div className="sender">{email.sender}</div>
