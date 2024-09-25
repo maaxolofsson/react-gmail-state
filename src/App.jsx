@@ -6,6 +6,7 @@ import "./styles/App.css";
 
 function App() {
   const [emails, setEmails] = useState(initialEmails);
+  const [hideReadChecker, setHideReadChecker] = useState(false);
 
   const toggleRead = (target) => {
     const updatedEmails = emails.map((email) =>
@@ -19,6 +20,15 @@ function App() {
       email === target ? { ...email, starred: !email.starred } : email
     );
     setEmails(updatedEmails);
+  };
+
+  const toggleReadEmails = () => {
+    hideReadChecker ? setEmails(emails) : setEmails(getReadEmails(emails));
+    setHideReadChecker(!hideReadChecker);
+  };
+
+  const getReadEmails = (_emails) => {
+    return _emails.filter((email) => email.read === true);
   };
 
   return (
@@ -46,8 +56,8 @@ function App() {
             <input
               id="hide-read"
               type="checkbox"
-              checked={false}
-              onChange={() => {}}
+              checked={hideReadChecker}
+              onChange={() => toggleReadEmails()}
             />
           </li>
         </ul>
